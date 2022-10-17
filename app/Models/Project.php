@@ -14,8 +14,8 @@ class Project extends Model
     return $this->hasMany(Image::class);
   }
 
-  public function company()
+  public function companies()
   {
-    return $this->belongsTo(Company::class);
+    return $this->belongsToMany(Company::class);
   }
 }
