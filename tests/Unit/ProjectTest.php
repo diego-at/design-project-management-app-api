@@ -7,34 +7,34 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
-class CompanyTest extends TestCase
+class ProjectTest extends TestCase
 {
-  /**
-   * A basic test example.
-   *
-   * @return void
-   */
+
+
+  public function test_store()
+  {
+
+    $user = User::factory()->create();
+    $session = $this->actingAs($user);
+    $response = $this->post('/api/projects', ['name' => 'project_test', 'revision_rounds' => 3]);
+
+    $response->assertSuccessful();
+  }
+
   public function test_index()
   {
     $user = User::factory()->create();
     $session = $this->actingAs($user);
 
-    $response = $session->get('/api/companies');
+    $response = $session->get('/api/projects');
     $response->assertStatus(200);
   }
   public function test_show()
   {
     $user = User::factory()->create();
     $session = $this->actingAs($user);
-    $response = $this->get('/api/companies/1');
-    $response->assertStatus(200);
-  }
-
-  public function test_store()
-  {
-    $response = $this->post('/api/companies', ['name' => 'Sally', 'company_type' => 'designer']);
-
-    $response->assertStatus(201);
+    $response = $this->get('/api/projects/1');
+    $response->assertSuccessful();
   }
 
   public function test_update()
@@ -42,7 +42,7 @@ class CompanyTest extends TestCase
 
     $user = User::factory()->create();
     $session = $this->actingAs($user);
-    $response = $this->put('/api/companies/1', ['name' => 'truc']);
+    $response = $this->put('/api/projects/1', ['name' => 'aze']);
 
     $response->assertSuccessful();
   }

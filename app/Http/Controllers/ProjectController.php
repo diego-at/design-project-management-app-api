@@ -2,84 +2,81 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+  //method to check user's access
+  static function hasAccess(Project $project)
+  {
+    $user = Auth::user();
+    //check user access to project
+    $project_companies = $project->companies->pluck('id')->toArray();
+    $user_company = $user->company->id;
+    if (!in_array($user_company, $project_companies)) {
+      return false;
+    }
+    return true;
+  }
+
+
+  public function store(Request $request)
+  {
+    $user = Auth::user();
+    $user_company_id = $user->company->id;
+
+    $project = new Project;
+    $project->name = $request->name;
+    $project->revision_rounds = $request->revision_rounds;
+    $project->save();
+    $project->companies()->attach($user_company_id);
+
+    //store with company of current user
+    return new ProjectResource($project);
+  }
+
+  public function index()
+  {
+    $user = Auth::user();
+    $projects = $user->company->projects;
+
+    // list all user's company projects
+    return ProjectResource::collection($projects);
+  }
+
+  public function show(Project $project)
+  {
+
+    if (!$this->hasAccess($project)) {
+      return response()->json(['error' => 'You can\'t access a project of another company'], 403);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    // access granted
+    return new ProjectResource($project);
+  }
+
+  public function update(Request $request, Project $project)
+  {
+    if (!$this->hasAccess($project)) {
+      return response()->json(['error' => 'You can\'t update a project of another company'], 403);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    // access granted
+    $project->update($request->only(['name', 'revision_rounds', 'status']));
+    return new ProjectResource($project);
+  }
+
+  public function destroy(Project $project)
+  {
+    if (!$this->hasAccess($project)) {
+      return response()->json(['error' => 'You can\'t delete a project of another company'], 403);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Project $project)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
-    }
+    // access granted
+    $project->delete();
+    return response()->json('Project deleted', 204);
+  }
 }

@@ -75,9 +75,6 @@ return new class extends Migration
     Schema::table('users', function (Blueprint $table) {
       $table->unsignedBigInteger('company_id');
       $table->foreign('company_id')->references('id')->on('companies');
-
-      $table->unsignedBigInteger('revision_id');
-      $table->foreign('revision_id')->references('id')->on('revisions');
     });
   }
 

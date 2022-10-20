@@ -5,14 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
-
+  private function hasAccess(Company $company)
+  {
+    $user = Auth::user();
+    //check user access to image
+    $user_company = $user->company;
+    $requested_company = $company;
+    if ($user_company != $requested_company) {
+      return false;
+    }
+    return true;
+  }
   public function index()
   {
-    return CompanyResource::collection(Company::all());
+    $user = Auth::user();
+    $user_company = $user->company;
+    return new CompanyResource($user_company);
   }
 
   public function store(Request $request)
@@ -34,23 +47,26 @@ class CompanyController extends Controller
 
   public function show(Company $company)
   {
+    if (!$this->hasAccess($company)) {
+      return response()->json(['error' => 'You can\'t access the company of someone else'], 403);
+    }
     return new CompanyResource($company);
   }
 
   public function update(Request $request, Company $company)
   {
     // check if currently authenticated user is the owner of the company
-    if ($request->user()->company !== $company->company) {
-      return response()->json(['error' => 'You can\'t update someone else\'s project.'], 403);
+    if (!$this->hasAccess($company)) {
+      return response()->json(['error' => 'You can\'t update the company of someone else'], 403);
     }
 
-    $company->update($request->only(['name', 'price', 'documents', 'status']));
+    $company->update($request->only(['name']));
 
     return new CompanyResource($company);
   }
 
   public function destroy(Company $company)
   {
-    //
+    return response()->json(['error' => 'You can\'t delete your company.'], 403);
   }
 }

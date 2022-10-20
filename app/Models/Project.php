@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
   use HasFactory;
+  protected $fillable = ['name', 'revision_rounds', 'status'];
 
   public function image()
   {
@@ -16,6 +17,6 @@ class Project extends Model
 
   public function companies()
   {
-    return $this->belongsToMany(Company::class);
+    return $this->belongsToMany(Company::class, 'company_project', 'company_id', 'project_id');
   }
 }
