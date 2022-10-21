@@ -10,10 +10,7 @@ class Image extends Model
   use HasFactory;
   protected $fillable = ['status'];
 
-  public function revisions()
-  {
-    return $this->hasMany(Revision::class);
-  }
+
 
   public function project()
   {
@@ -23,5 +20,10 @@ class Image extends Model
   public function versions()
   {
     return $this->hasMany(Version::class);
+  }
+
+  public function revisions()
+  {
+    return $this->hasMany(Revision::class);
   }
 }

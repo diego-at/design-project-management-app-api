@@ -22,6 +22,7 @@ class VersionResource extends JsonResource
       'created_at' => (string) $this->created_at,
       'updated_at' => (string) $this->updated_at,
       'image' => $this->image,
+      'revisions' => $this->revisions,
     ];
   }
 }

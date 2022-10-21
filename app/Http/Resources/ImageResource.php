@@ -19,6 +19,8 @@ class ImageResource extends JsonResource
       'status' => $this->status,
       'created_at' => (string) $this->created_at,
       'updated_at' => (string) $this->updated_at,
+      'revision_rounds' => $this->revision_rounds,
+      'max_revision_each_round' => $this->max_revision_each_round,
       'project' => $this->project,
       'revisions' => $this->revisions,
       'versions' => $this->versions,

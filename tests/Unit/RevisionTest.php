@@ -7,44 +7,46 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
-class CompanyTest extends TestCase
+class RevisionTest extends TestCase
 {
+
+
   public function prepareTest()
   {
     $user = User::factory()->create();
     $this->actingAs($user);
   }
 
-
-
   public function test_store()
   {
-    $response = $this->post('/api/companies', ['name' => 'Sally', 'company_type' => 'designer']);
+    $this->prepareTest();
 
-    $response->assertStatus(201);
+    $response = $this->post('/api/revisions', [
+      'is_done' => false, 'message' => 'revision_test', 'geometry_object' => '{"Peter":35,"Ben":37,"Joe":43}', 'image_id' => 1,
+    ]);
+
+    $response->assertSuccessful();
   }
 
   public function test_index()
   {
     $this->prepareTest();
 
-    $this->post('/api/companies', ['name' => 'Sally', 'company_type' => 'designer']);
-    $response = $this->get('/api/companies');
+    $response = $this->get('/api/revisions');
     $response->assertStatus(200);
   }
   public function test_show()
   {
     $this->prepareTest();
-
-    $response = $this->get('/api/companies/1');
-    $response->assertStatus(200);
+    $response = $this->get('/api/revisions/1');
+    $response->assertSuccessful();
   }
+
   public function test_update()
   {
-
+    //ne marche pas car l'id de l'user de la révision n'est pas le même que celui de la révision  
     $this->prepareTest();
-
-    $response = $this->put('/api/companies/1', ['name' => 'truc']);
+    $response = $this->put('/api/revisions/1', ['message' => 'aze']);
 
     $response->assertSuccessful();
   }

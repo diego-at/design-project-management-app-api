@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class ImageController extends Controller
 {
   //method to check user's access
-  private function hasAccess(Image $image)
+  static function hasAccess(Image $image)
   {
     $user = Auth::user();
     //check user access to image
@@ -29,6 +29,8 @@ class ImageController extends Controller
   {
     $request->validate([
       'project_id' => ['required'],
+      'revision_rounds' => ['required'],
+      'max_revision_each_round' => ['required'],
     ]);
     $project = Project::findOrFail($request->project_id);
     if (!ProjectController::hasAccess($project)) {
@@ -40,6 +42,7 @@ class ImageController extends Controller
 
     $image = new Image;
     $image->project_id = $request->project_id;
+    $image->revision_rounds = $request->revision_rounds;
     $image->save();
 
     //store with company of current user

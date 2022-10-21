@@ -13,4 +13,9 @@ class Version extends Model
   {
     return $this->belongsTo(Image::class);
   }
+
+  public function revisions()
+  {
+    return $this->hasMany(Revision::class);
+  }
 }

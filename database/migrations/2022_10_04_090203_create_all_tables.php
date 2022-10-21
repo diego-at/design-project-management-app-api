@@ -19,13 +19,15 @@ return new class extends Migration
       $table->id();
       $table->timestamps();
       $table->string("name");
-      $table->integer("revision_rounds");
       $table->enum('status',  ['work_in_progress', 'waiting_for_review', 'finished'])->default('work_in_progress');
     });
 
     Schema::create('images', function (Blueprint $table) {
       $table->id();
       $table->timestamps();
+      $table->integer("max_revision_rounds");
+      $table->integer("max_revision_each_round");
+      $table->integer("current_revision_rounds");
       $table->enum('status',  ['making_first_version', 'in_review', 'making_revisions', 'final_version_delivered',])->default('making_first_version');
     });
 
@@ -67,6 +69,9 @@ return new class extends Migration
     Schema::table('revisions', function (Blueprint $table) {
       $table->unsignedBigInteger('image_id');
       $table->foreign('image_id')->references('id')->on('images');
+
+      $table->unsignedBigInteger('version_id');
+      $table->foreign('version_id')->references('id')->on('versions');
 
       $table->unsignedBigInteger('user_id');
       $table->foreign('user_id')->references('id')->on('users');

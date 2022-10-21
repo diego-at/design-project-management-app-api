@@ -9,38 +9,41 @@ use Tests\TestCase;
 
 class ImageTest extends TestCase
 {
-
+  public function prepareTest()
+  {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+  }
 
   public function test_store()
   {
+    $this->prepareTest();
 
-    $user = User::factory()->create();
-    $session = $this->actingAs($user);
-    $response = $this->post('/api/images', ['project_id' => 1]);
+    $response = $this->post('/api/images', ['project_id' => 1, 'revision_rounds' => 3, 'max_revision_each_round' => 10,]);
 
     $response->assertSuccessful();
   }
 
   public function test_index()
   {
-    $user = User::factory()->create();
-    $session = $this->actingAs($user);
+    $this->prepareTest();
 
-    $response = $session->get('/api/images');
+
+    $response = $this->get('/api/images');
     $response->assertSuccessful();
   }
   public function test_show()
   {
-    $user = User::factory()->create();
-    $session = $this->actingAs($user);
+    $this->prepareTest();
+
     $response = $this->get('/api/images/1');
     $response->assertSuccessful();
   }
   public function test_update()
   {
 
-    $user = User::factory()->create();
-    $session = $this->actingAs($user);
+    $this->prepareTest();
+
     $response = $this->put('/api/images/1', ['status' => 'in_review']);
 
     $response->assertSuccessful();
