@@ -1,4 +1,10 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Design Project Management Dashboard</title><style>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Design Project Management Dashboard</title>
+
+<svg fill="none" viewBox="0 0 300 120" width="300" height="120" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+
+<style>
 /* cspell:disable-file */
 /* webkit printing magic: print all background colors */
 html {
@@ -1405,4 +1411,9 @@ class UserFactory extends Factory
 </p><h3 id="bf73e171-4a52-4839-bb76-606f59886f29" class="">Authentication</h3><p id="197243b2-419c-441c-ac07-b78cd9d95581" class="">Laravel fortify</p><pre id="acb5a472-5441-4f03-8672-a37572ecde37" class="code"><code>composer require laravel/fortify
 php artisan vendor:publish --provider=&quot;Laravel\Fortify\FortifyServiceProvider&quot;
 php artisan migrate</code></pre><pre id="2157a419-5917-487e-89d1-f48dec464645" class="code"><code>&#x27;views&#x27; =&gt; false,</code></pre><p id="92d6a94d-ed98-4990-a3ce-ec083c5967a1" class="">
-</p></div></article></body></html>
+</p></div></article>
+
+    </div>
+  </foreignObject>
+</svg>
+</body></html>
