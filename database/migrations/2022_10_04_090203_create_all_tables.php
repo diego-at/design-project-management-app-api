@@ -29,6 +29,7 @@ return new class extends Migration
       $table->integer("max_revision_each_round");
       $table->integer("current_revision_rounds");
       $table->string("description");
+
       $table->enum('status',  ['making_first_version', 'in_review', 'making_revisions', 'final_version_delivered',])->default('making_first_version');
     });
 

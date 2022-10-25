@@ -30,6 +30,7 @@ class VersionController extends Controller
 
     $request->validate([
       'image_id' => ['required'],
+      'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
 
     ]);
     $image = Image::findOrFail($request->image_id);
@@ -62,9 +63,15 @@ class VersionController extends Controller
       $previous_version = Version::findOrFail($previous_version_id);
       $previous_version->is_current = false;
     }
+    //store version image
+    $imageName = time() . '.' . $request->image->extension();
+    //TODO store in bucket instead 
+    // $request->image->storeAs('images', $imageName, 's3');
+    $request->image->move(public_path('images'), $imageName);
+
 
     $version = new Version;
-    $version->url = $request->url;
+    $version->url = $imageName;
     $version->image_id = $request->image_id;
     $version->is_current = true;
     $version->version_number = $version_number;
