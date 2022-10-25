@@ -26,6 +26,7 @@ class ProjectWorkflowTest extends TestCase
     $company_designer_id = $response_company_designer["data"]["id"];
     $company_client_id = $response_company_client["data"]["id"];
 
+    $response_user_designer =  $this->post('/api/users', ['name' => 'company_test_workflow_designer', 'company_type' => 'designer']);
     die();
     //create user
     //create project

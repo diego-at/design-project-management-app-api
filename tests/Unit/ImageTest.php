@@ -19,7 +19,7 @@ class ImageTest extends TestCase
   {
     $this->prepareTest();
 
-    $response = $this->post('/api/images', ['project_id' => 1, 'revision_rounds' => 3, 'max_revision_each_round' => 10,]);
+    $response = $this->post('/api/images', ['project_id' => 1, 'revision_rounds' => 3, 'max_revision_each_round' => 10, 'description' => 'home page']);
 
     $response->assertSuccessful();
   }

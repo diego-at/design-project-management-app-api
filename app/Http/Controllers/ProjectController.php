@@ -25,12 +25,15 @@ class ProjectController extends Controller
 
   public function store(Request $request)
   {
+    $request->validate([
+      'name' => ['required'],
+    ]);
+
     $user = Auth::user();
     $user_company_id = $user->company->id;
 
     $project = new Project;
     $project->name = $request->name;
-    $project->revision_rounds = $request->revision_rounds;
     $project->save();
     $project->companies()->attach($user_company_id);
 

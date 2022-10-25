@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RevisionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VersionController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,4 @@ Route::apiResource('projects', ProjectController::class);
 Route::apiResource('images', ImageController::class);
 Route::apiResource('versions', VersionController::class);
 Route::apiResource('revisions', RevisionController::class);
-Route::apiResource('users', UserController::class);
+//Route::apiResource('users', UserController::class);

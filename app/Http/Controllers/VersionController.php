@@ -29,7 +29,6 @@ class VersionController extends Controller
   {
 
     $request->validate([
-      'url' => ['required'],
       'image_id' => ['required'],
 
     ]);

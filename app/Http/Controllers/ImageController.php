@@ -31,6 +31,7 @@ class ImageController extends Controller
       'project_id' => ['required'],
       'revision_rounds' => ['required'],
       'max_revision_each_round' => ['required'],
+      'description' => ['required'],
     ]);
     $project = Project::findOrFail($request->project_id);
     if (!ProjectController::hasAccess($project)) {
